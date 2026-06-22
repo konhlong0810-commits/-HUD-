@@ -41,9 +41,14 @@ public class LoginActivity extends AppCompatActivity {
             new Thread(() -> {
                 try {
                     var user = api.getMe();
-                    if (user != null) runOnUiThread(() ->
-                        gotoMain(user.username, user.display_name));
-                    else sm.logout();
+                    if (user != null) {
+                        String uu = user.username;
+                        String dd = user.display_name;
+                        runOnUiThread(() -> {
+                            try { gotoMain(uu, dd); }
+                            catch (Exception e) { sm.logout(); }
+                        });
+                    } else { sm.logout(); }
                 } catch (Exception e) { sm.logout(); }
             }).start();
         }
@@ -79,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     if (r.ok && r.sessionId != null) {
                         api.setSessionId(r.sessionId);
-                        new SessionManager(this).saveSession(r.sessionId,
+                        new SessionManager(LoginActivity.this).saveSession(r.sessionId,
                             r.user != null ? r.user.username : u,
                             r.user != null ? r.user.display_name : u);
                         gotoMain(r.user != null ? r.user.username : u,
@@ -101,11 +106,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void gotoMain(String username, String displayName) {
-        Intent i = new Intent(this, MainActivity.class);
-        i.putExtra("username", username);
-        i.putExtra("display_name", displayName);
-        i.putExtra("session_id", api.getSessionId());
-        startActivity(i);
-        finish();
+        try {
+            Intent i = new Intent(this, MainActivity.class);
+            i.putExtra("username", username);
+            i.putExtra("display_name", displayName);
+            i.putExtra("session_id", api.getSessionId());
+            startActivity(i);
+            finish();
+        } catch (Exception e) {
+            // MainActivity 崩溃 → 清除会话，回退到登录页
+            new SessionManager(this).logout();
+            Toast.makeText(this, "启动失败，请重试", Toast.LENGTH_SHORT).show();
+        }
     }
 }
