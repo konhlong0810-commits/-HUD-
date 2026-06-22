@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebViewClient(new WebViewClient());
         webView.setWebChromeClient(new WebChromeClient());
         webView.addJavascriptInterface(new SensorBridge(), "AndroidBridge");
-        webView.loadUrl("https://konglong-milk.top:4002/hud");
+        webView.loadUrl("https://konglong-milk.top:4002/HUDAPK");
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         if (sensorManager != null) {
