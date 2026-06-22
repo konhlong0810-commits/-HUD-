@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="32dp"
+    android:background="#F8FAFC">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🦕 恐龙HUD"
+        android:textSize="26sp"
+        android:textColor="#1E293B"
+        android:fontFamily="sans-serif-medium"
+        android:letterSpacing="0.05"
+        android:layout_marginBottom="32dp" />
+
+    <LinearLayout
+        android:id="@+id/tabRow"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="24dp"
+        android:background="#E2E8F0"
+        android:padding="3dp">
+
+        <TextView
+            android:id="@+id/tabLogin"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="登录"
+            android:gravity="center"
+            android:textColor="#2563EB"
+            android:background="@android:color/white"
+            android:textSize="15sp"
+            android:fontFamily="sans-serif-medium"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <TextView
+            android:id="@+id/tabRegister"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="注册"
+            android:gravity="center"
+            android:textColor="#94A3B8"
+            android:background="@android:color/transparent"
+            android:textSize="15sp"
+            android:fontFamily="sans-serif-medium"
+            android:clickable="true"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/etUsername"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="用户名"
+        android:textSize="15sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="@drawable/edit_bg"
+        android:inputType="text"
+        android:singleLine="true"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="密码"
+        android:textSize="15sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="@drawable/edit_bg"
+        android:inputType="textPassword"
+        android:singleLine="true"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/etPassword2"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="确认密码"
+        android:textSize="15sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="@drawable/edit_bg"
+        android:inputType="textPassword"
+        android:singleLine="true"
+        android:visibility="gone"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/tvError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#EF4444"
+        android:textSize="13sp"
+        android:gravity="center"
+        android:minHeight="20dp"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="登 录"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#2563EB"
+        android:letterSpacing="0.1" />
+
+</LinearLayout>
