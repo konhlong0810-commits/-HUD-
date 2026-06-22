@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:background="#F8FAFC">
 
-    <!-- 顶栏 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,19 +19,31 @@
             android:background="#FFFBEB" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="3dp" android:paddingBottom="3dp" />
     </LinearLayout>
 
-    <!-- 速度表 -->
-    <com.dino.hud.views.SpeedGaugeView
-        android:id="@+id/speedGauge"
+    <!-- 速度数字 -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp" />
+        android:layout_height="140dp"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView android:id="@+id/tvSpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="72sp"
+            android:textColor="#1E293B"
+            android:fontFamily="sans-serif-medium" />
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="公里/时"
+            android:textSize="14sp"
+            android:textColor="#64748B" />
+    </LinearLayout>
 
-    <!-- 传感器面板 -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:padding="8dp">
-
         <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
 
             <LinearLayout android:orientation="vertical" android:background="@android:color/white"
@@ -41,11 +52,11 @@
                 <LinearLayout android:orientation="horizontal">
                     <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:padding="2dp">
                         <TextView android:text="坐标" android:textSize="10sp" android:textColor="#64748B"/>
-                        <TextView android:id="@+id/tvCoord" android:text="--" android:textSize="13sp" android:textColor="#1E293B" android:fontFamily="monospace"/>
+                        <TextView android:id="@+id/tvCoord" android:text="--" android:textSize="12sp" android:textColor="#1E293B" android:fontFamily="monospace"/>
                     </LinearLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:padding="2dp">
                         <TextView android:text="精度/海拔" android:textSize="10sp" android:textColor="#64748B"/>
-                        <TextView android:id="@+id/tvGpsInfo" android:text="--" android:textSize="13sp" android:textColor="#1E293B" android:fontFamily="monospace"/>
+                        <TextView android:id="@+id/tvGpsInfo" android:text="--" android:textSize="12sp" android:textColor="#1E293B" android:fontFamily="monospace"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -55,19 +66,19 @@
                 <TextView android:text=" 运动传感器" android:textSize="13sp" android:textColor="#2563EB" android:layout_marginBottom="6dp"/>
                 <LinearLayout android:orientation="horizontal" android:padding="2dp">
                     <TextView android:text="加速度" android:textSize="11sp" android:textColor="#64748B" android:layout_width="55dp"/>
-                    <TextView android:id="@+id/tvAccel" android:text="--" android:textSize="13sp" android:textColor="#1E293B" android:fontFamily="monospace"/>
+                    <TextView android:id="@+id/tvAccel" android:text="--" android:textSize="12sp" android:textColor="#1E293B" android:fontFamily="monospace"/>
                 </LinearLayout>
                 <LinearLayout android:orientation="horizontal" android:padding="2dp">
                     <TextView android:text="陀螺仪" android:textSize="11sp" android:textColor="#64748B" android:layout_width="55dp"/>
-                    <TextView android:id="@+id/tvGyro" android:text="--" android:textSize="13sp" android:textColor="#1E293B" android:fontFamily="monospace"/>
+                    <TextView android:id="@+id/tvGyro" android:text="--" android:textSize="12sp" android:textColor="#1E293B" android:fontFamily="monospace"/>
                 </LinearLayout>
                 <LinearLayout android:orientation="horizontal" android:padding="2dp">
                     <TextView android:text="气压" android:textSize="11sp" android:textColor="#64748B" android:layout_width="55dp"/>
-                    <TextView android:id="@+id/tvPressure" android:text="--" android:textSize="13sp" android:textColor="#1E293B" android:fontFamily="monospace"/>
+                    <TextView android:id="@+id/tvPressure" android:text="--" android:textSize="12sp" android:textColor="#1E293B" android:fontFamily="monospace"/>
                 </LinearLayout>
                 <LinearLayout android:orientation="horizontal" android:padding="2dp">
                     <TextView android:text="航向" android:textSize="11sp" android:textColor="#64748B" android:layout_width="55dp"/>
-                    <TextView android:id="@+id/tvHeading" android:text="--" android:textSize="20sp" android:textColor="#2563EB" android:fontFamily="monospace"/>
+                    <TextView android:id="@+id/tvHeading" android:text="--" android:textSize="18sp" android:textColor="#2563EB" android:fontFamily="monospace"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -88,7 +99,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- 底部按钮 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
