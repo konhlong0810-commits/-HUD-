@@ -64,14 +64,20 @@ public class MainActivity extends AppCompatActivity {
             sp.edit().putInt(CRASH_KEY, 0).apply(); // 启动成功，清零
             h.postDelayed(tick, 1000);
         } catch (Throwable e) {
-            String msg = e.getClass().getSimpleName() + ": " + (e.getMessage() != null ? e.getMessage() : "");
+            // 打印完整堆栈到 logcat
+            android.util.Log.e("MainActivity", "启动崩溃", e);
+            // 取最内层 cause
+            Throwable cause = e;
+            while (cause.getCause() != null) cause = cause.getCause();
+            // 取第一个有意义的堆栈行
+            String at = "";
+            for (StackTraceElement st : cause.getStackTrace()) {
+                if (st.getClassName().contains("dino")) { at = " @" + st.getLineNumber(); break; }
+            }
+            String msg = cause.getClass().getSimpleName() + at + "\n" + (cause.getMessage() != null ? cause.getMessage() : "");
             Toast.makeText(this, "启动失败: " + msg, Toast.LENGTH_LONG).show();
             if (sm != null) sm.logout();
-            // 如果连续崩，直接退到登录页不再自动登录
-            if (crashCount >= 2) {
-                sp.edit().putInt(CRASH_KEY, 0).apply();
-                if (sm != null) sm.logout();
-            }
+            if (crashCount >= 2) sp.edit().putInt(CRASH_KEY, 0).apply();
             startActivity(new Intent(this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             finish();
         }
