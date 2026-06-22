@@ -14,10 +14,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.socket.client.IO;
-import io.socket.client.Socket;
 import okhttp3.*;
 import okhttp3.MediaType;
+import javax.net.ssl.*;
+import java.security.cert.X509Certificate;
 
 /**
  * HTTP 客户端，封装所有服务端 API 调用
@@ -27,17 +27,38 @@ public class ApiClient {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static final Gson GSON = new Gson();
 
-    private final OkHttpClient http;
+    private OkHttpClient http;
     private String sessionId;
-    private Socket socket;
 
     public ApiClient() {
-        http = new OkHttpClient.Builder()
+        try {
+            http = buildHttpClient();
+        } catch (Exception e) {
+            // fallback: default OkHttp
+            http = new OkHttpClient.Builder()
+                .connectTimeout(8, TimeUnit.SECONDS)
+                .readTimeout(15, TimeUnit.SECONDS)
+                .build();
+        }
+    }
+
+    private OkHttpClient buildHttpClient() {
+        OkHttpClient.Builder b = new OkHttpClient.Builder()
             .connectTimeout(8, TimeUnit.SECONDS)
             .readTimeout(15, TimeUnit.SECONDS)
-            .writeTimeout(15, TimeUnit.SECONDS)
-            .hostnameVerifier((h, s) -> true)       // 自签/Let's Encrypt 兼容
-            .build();
+            .writeTimeout(15, TimeUnit.SECONDS);
+        try {
+            TrustManager[] tm = new TrustManager[]{new X509TrustManager() {
+                public void checkClientTrusted(X509Certificate[] c, String a) {}
+                public void checkServerTrusted(X509Certificate[] c, String a) {}
+                public X509Certificate[] getAcceptedIssuers() { return new X509Certificate[0]; }
+            }};
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, tm, new java.security.SecureRandom());
+            b.sslSocketFactory(sc.getSocketFactory(), (X509TrustManager) tm[0]);
+        } catch (Exception ignored) {}
+        b.hostnameVerifier((h, s) -> true);
+        return b.build();
     }
 
     public void setSessionId(String id) { this.sessionId = id; }
@@ -153,32 +174,6 @@ public class ApiClient {
             return GSON.fromJson(o.get("list"), listType);
         }
         return new ArrayList<>();
-    }
-
-    // ==================== Socket.IO ====================
-
-    public Socket connectSocket() {
-        if (socket != null && socket.connected()) return socket;
-        try {
-            IO.Options opts = new IO.Options();
-            opts.forceNew = true;
-            opts.reconnection = true;
-            opts.query = "sessionId=" + (sessionId != null ? sessionId : "");
-            // SSL
-            OkHttpClient ok = new OkHttpClient.Builder()
-                .hostnameVerifier((h, s) -> true).build();
-            opts.webSocketFactory = ok;
-            opts.callFactory = ok;
-            socket = IO.socket(BASE, opts);
-            socket.connect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return socket;
-    }
-
-    public void disconnectSocket() {
-        if (socket != null) { socket.disconnect(); socket.off(); socket = null; }
     }
 
     // ==================== HTTP helpers ====================

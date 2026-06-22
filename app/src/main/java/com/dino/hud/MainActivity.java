@@ -281,7 +281,6 @@ public class MainActivity extends AppCompatActivity {
             .setMessage("退出恐龙HUD？")
             .setPositiveButton("退出", (d, i) -> {
                 saveSessionIfNeeded();
-                api.disconnectSocket();
                 sessionMgr.logout();
                 Intent intent = new Intent(this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

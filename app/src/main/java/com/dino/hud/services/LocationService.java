@@ -209,7 +209,7 @@ public class LocationService extends Service implements SensorEventListener {
         return new NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("恐龙HUD 运行中")
             .setContentText(text)
-            .setSmallIcon(android.R.drawable.ic_menu_compass)
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setOngoing(true)
             .setContentIntent(pi)
             .build();
