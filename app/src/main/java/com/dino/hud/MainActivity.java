@@ -109,11 +109,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initService() {
-        Intent si = new Intent(this, LocationService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            startForegroundService(si);
-        else startService(si);
-        bindService(si, svcConn, Context.BIND_AUTO_CREATE);
+        try {
+            Intent si = new Intent(this, LocationService.class);
+            startService(si);
+            bindService(si, svcConn, Context.BIND_AUTO_CREATE);
+        } catch (Exception e) {
+            Toast.makeText(this, "GPS服务启动失败", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private final ServiceConnection svcConn = new ServiceConnection() {

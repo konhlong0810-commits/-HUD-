@@ -3,7 +3,6 @@ package com.dino.hud;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,53 +22,30 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle s) {
         super.onCreate(s);
-        try {
-            setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login);
 
-            etUser = findViewById(R.id.etUsername);
-            etPass = findViewById(R.id.etPassword);
-            etPass2 = findViewById(R.id.etPassword2);
-            tvError = findViewById(R.id.tvError);
-            tabLogin = findViewById(R.id.tabLogin);
-            tabRegister = findViewById(R.id.tabRegister);
-            btnSubmit = findViewById(R.id.btnSubmit);
+        etUser = findViewById(R.id.etUsername);
+        etPass = findViewById(R.id.etPassword);
+        etPass2 = findViewById(R.id.etPassword2);
+        tvError = findViewById(R.id.tvError);
+        tabLogin = findViewById(R.id.tabLogin);
+        tabRegister = findViewById(R.id.tabRegister);
+        btnSubmit = findViewById(R.id.btnSubmit);
 
-            Log.d("Login", "UI loaded OK");
-        } catch (Exception e) {
-            Log.e("Login", "UI crash: " + Log.getStackTraceString(e));
-            Toast.makeText(this, "UI错误: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            return;
-        }
+        api = new ApiClient();
 
-        try {
-            api = new ApiClient();
-            Log.d("Login", "ApiClient OK");
-        } catch (Exception e) {
-            Log.e("Login", "ApiClient crash: " + Log.getStackTraceString(e));
-            Toast.makeText(this, "网络初始化错误", Toast.LENGTH_LONG).show();
-            api = new ApiClient(); // 重试（fallback）
-        }
-
-        // 如果已有 session，直接进主页
-        try {
-            SessionManager sm = new SessionManager(this);
-            if (sm.isLoggedIn()) {
-                String username = sm.getUsername();
-                api.setSessionId(sm.getSessionId());
-                new Thread(() -> {
-                    try {
-                        var user = api.getMe();
-                        if (user != null) {
-                            runOnUiThread(() -> gotoMain(user.username, user.display_name));
-                            return;
-                        }
-                    } catch (Exception e) {
-                        sm.logout();
-                    }
-                }).start();
-            }
-        } catch (Exception e) {
-            Log.e("Login", "Session check crash: " + Log.getStackTraceString(e));
+        // 自动登录
+        SessionManager sm = new SessionManager(this);
+        if (sm.isLoggedIn()) {
+            api.setSessionId(sm.getSessionId());
+            new Thread(() -> {
+                try {
+                    var user = api.getMe();
+                    if (user != null) runOnUiThread(() ->
+                        gotoMain(user.username, user.display_name));
+                    else sm.logout();
+                } catch (Exception e) { sm.logout(); }
+            }).start();
         }
 
         tabLogin.setOnClickListener(v -> switchTab(true));
@@ -89,64 +65,47 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void doAuth() {
-        try {
-            String u = etUser.getText().toString().trim();
-            String p = etPass.getText().toString();
-            String p2 = etPass2.getText().toString();
+        String u = etUser.getText().toString().trim();
+        String p = etPass.getText().toString();
+        if (TextUtils.isEmpty(u) || TextUtils.isEmpty(p)) { tvError.setText("请填写用户名和密码"); return; }
+        if (!isLogin) {
+            if (!p.equals(etPass2.getText().toString())) { tvError.setText("两次密码不一致"); return; }
+        }
+        btnSubmit.setEnabled(false); btnSubmit.setText("请等待…"); tvError.setText("");
 
-            if (TextUtils.isEmpty(u) || TextUtils.isEmpty(p)) {
-                tvError.setText("请填写用户名和密码"); return;
-            }
-            if (!isLogin && !p.equals(p2)) {
-                tvError.setText("两次密码不一致"); return;
-            }
-            btnSubmit.setEnabled(false);
-            btnSubmit.setText("请等待…");
-            tvError.setText("");
-
-            new Thread(() -> {
-                try {
-                    ApiClient.AuthResult r = isLogin
-                        ? api.login(u, p) : api.register(u, p);
-                    runOnUiThread(() -> {
-                        if (r.ok && r.sessionId != null) {
-                            api.setSessionId(r.sessionId);
-                            new SessionManager(LoginActivity.this).saveSession(r.sessionId,
-                                r.user != null ? r.user.username : u,
-                                r.user != null ? r.user.display_name : u);
-                            gotoMain(r.user != null ? r.user.username : u,
-                                     r.user != null ? r.user.display_name : u);
-                        } else {
-                            btnSubmit.setEnabled(true);
-                            btnSubmit.setText(isLogin ? "登 录" : "注 册");
-                            tvError.setText(r.msg != null ? r.msg : "操作失败");
-                        }
-                    });
-                } catch (IOException e) {
-                    runOnUiThread(() -> {
+        new Thread(() -> {
+            try {
+                ApiClient.AuthResult r = isLogin ? api.login(u, p) : api.register(u, p);
+                runOnUiThread(() -> {
+                    if (r.ok && r.sessionId != null) {
+                        api.setSessionId(r.sessionId);
+                        new SessionManager(this).saveSession(r.sessionId,
+                            r.user != null ? r.user.username : u,
+                            r.user != null ? r.user.display_name : u);
+                        gotoMain(r.user != null ? r.user.username : u,
+                                 r.user != null ? r.user.display_name : u);
+                    } else {
                         btnSubmit.setEnabled(true);
                         btnSubmit.setText(isLogin ? "登 录" : "注 册");
-                        tvError.setText("网络错误: " + e.getMessage());
-                    });
-                }
-            }).start();
-        } catch (Exception e) {
-            Log.e("Login", "Auth crash: " + Log.getStackTraceString(e));
-            Toast.makeText(this, "错误: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+                        tvError.setText(r.msg != null ? r.msg : "操作失败");
+                    }
+                });
+            } catch (IOException e) {
+                runOnUiThread(() -> {
+                    btnSubmit.setEnabled(true);
+                    btnSubmit.setText(isLogin ? "登 录" : "注 册");
+                    tvError.setText("网络错误: " + e.getMessage());
+                });
+            }
+        }).start();
     }
 
     private void gotoMain(String username, String displayName) {
-        try {
-            Intent i = new Intent(this, MainActivity.class);
-            i.putExtra("username", username);
-            i.putExtra("display_name", displayName);
-            i.putExtra("session_id", api.getSessionId());
-            startActivity(i);
-            finish();
-        } catch (Exception e) {
-            Log.e("Login", "MainActivity missing: " + Log.getStackTraceString(e));
-            Toast.makeText(this, "MainActivity 缺失", Toast.LENGTH_LONG).show();
-        }
+        Intent i = new Intent(this, MainActivity.class);
+        i.putExtra("username", username);
+        i.putExtra("display_name", displayName);
+        i.putExtra("session_id", api.getSessionId());
+        startActivity(i);
+        finish();
     }
 }
