@@ -3,7 +3,7 @@ android {
     namespace 'com.dino.hud'
     compileSdk 34
     defaultConfig {
-        applicationId "com.dino.hud2"
+        applicationId "com.dino.hud3"
         minSdk 24
         targetSdk 34
         versionCode 1
