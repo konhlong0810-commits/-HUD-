@@ -3,117 +3,64 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
+    android:padding="40dp"
     android:background="#F8FAFC">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:padding="10dp"
-        android:background="@android:color/white"
-        android:elevation="1dp">
-        <TextView android:id="@+id/tvUser" android:layout_width="0dp" android:layout_weight="1"
-            android:textSize="14sp" android:textColor="#2563EB" />
-        <TextView android:id="@+id/gpsBadge" android:layout_width="wrap_content"
-            android:text="GPS" android:textSize="12sp" android:textColor="#D97706"
-            android:background="#FFFBEB" android:paddingStart="8dp" android:paddingEnd="8dp" android:paddingTop="3dp" android:paddingBottom="3dp" />
-    </LinearLayout>
+        android:text="🦕 恐龙HUD"
+        android:textSize="28sp"
+        android:textColor="#1E293B"
+        android:layout_marginBottom="8dp" />
 
-    <!-- 速度数字 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:gravity="center"
-        android:orientation="vertical">
-        <TextView android:id="@+id/tvSpeed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textSize="72sp"
-            android:textColor="#1E293B"
-            android:fontFamily="sans-serif-medium" />
-        <TextView android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="公里/时"
-            android:textSize="14sp"
-            android:textColor="#64748B" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tvUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="#2563EB"
+        android:layout_marginBottom="24dp" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="8dp">
-        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tvSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textSize="80sp"
+        android:textColor="#1E293B"
+        android:fontFamily="sans-serif-medium" />
 
-            <LinearLayout android:orientation="vertical" android:background="@android:color/white"
-                android:padding="12dp" android:layout_marginBottom="6dp" android:elevation="1dp">
-                <TextView android:text=" GPS 定位" android:textSize="13sp" android:textColor="#2563EB" android:layout_marginBottom="6dp"/>
-                <LinearLayout android:orientation="horizontal">
-                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:padding="2dp">
-                        <TextView android:text="坐标" android:textSize="10sp" android:textColor="#64748B"/>
-                        <TextView android:id="@+id/tvCoord" android:text="--" android:textSize="12sp" android:textColor="#1E293B" android:fontFamily="monospace"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:padding="2dp">
-                        <TextView android:text="精度/海拔" android:textSize="10sp" android:textColor="#64748B"/>
-                        <TextView android:id="@+id/tvGpsInfo" android:text="--" android:textSize="12sp" android:textColor="#1E293B" android:fontFamily="monospace"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="公里/时"
+        android:textSize="14sp"
+        android:textColor="#64748B"
+        android:layout_marginBottom="8dp" />
 
-            <LinearLayout android:orientation="vertical" android:background="@android:color/white"
-                android:padding="12dp" android:layout_marginBottom="6dp" android:elevation="1dp">
-                <TextView android:text=" 运动传感器" android:textSize="13sp" android:textColor="#2563EB" android:layout_marginBottom="6dp"/>
-                <LinearLayout android:orientation="horizontal" android:padding="2dp">
-                    <TextView android:text="加速度" android:textSize="11sp" android:textColor="#64748B" android:layout_width="55dp"/>
-                    <TextView android:id="@+id/tvAccel" android:text="--" android:textSize="12sp" android:textColor="#1E293B" android:fontFamily="monospace"/>
-                </LinearLayout>
-                <LinearLayout android:orientation="horizontal" android:padding="2dp">
-                    <TextView android:text="陀螺仪" android:textSize="11sp" android:textColor="#64748B" android:layout_width="55dp"/>
-                    <TextView android:id="@+id/tvGyro" android:text="--" android:textSize="12sp" android:textColor="#1E293B" android:fontFamily="monospace"/>
-                </LinearLayout>
-                <LinearLayout android:orientation="horizontal" android:padding="2dp">
-                    <TextView android:text="气压" android:textSize="11sp" android:textColor="#64748B" android:layout_width="55dp"/>
-                    <TextView android:id="@+id/tvPressure" android:text="--" android:textSize="12sp" android:textColor="#1E293B" android:fontFamily="monospace"/>
-                </LinearLayout>
-                <LinearLayout android:orientation="horizontal" android:padding="2dp">
-                    <TextView android:text="航向" android:textSize="11sp" android:textColor="#64748B" android:layout_width="55dp"/>
-                    <TextView android:id="@+id/tvHeading" android:text="--" android:textSize="18sp" android:textColor="#2563EB" android:fontFamily="monospace"/>
-                </LinearLayout>
-            </LinearLayout>
+    <TextView
+        android:id="@+id/tvGps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="等待GPS..."
+        android:textSize="13sp"
+        android:textColor="#94A3B8"
+        android:layout_marginBottom="24dp" />
 
-            <LinearLayout android:orientation="vertical" android:background="@android:color/white"
-                android:padding="12dp" android:elevation="1dp">
-                <TextView android:text=" 本次行程" android:textSize="13sp" android:textColor="#2563EB" android:layout_marginBottom="6dp"/>
-                <LinearLayout android:orientation="horizontal">
-                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:padding="2dp">
-                        <TextView android:text="里程" android:textSize="10sp" android:textColor="#64748B"/>
-                        <TextView android:id="@+id/tvDist" android:text="--" android:textSize="13sp" android:textColor="#1E293B" android:fontFamily="monospace"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:padding="2dp">
-                        <TextView android:text="时长" android:textSize="10sp" android:textColor="#64748B"/>
-                        <TextView android:id="@+id/tvDur" android:text="--" android:textSize="13sp" android:textColor="#1E293B" android:fontFamily="monospace"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+    <Button
+        android:id="@+id/btnTest"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:text="点我测试"
+        android:layout_marginBottom="12dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:background="@android:color/white"
-        android:elevation="4dp"
-        android:weightSum="3">
-        <Button android:id="@+id/btnHistory" android:layout_width="0dp" android:layout_height="match_parent"
-            android:layout_weight="1" android:text=" 历史" android:textSize="13sp"
-            android:textColor="#64748B" style="?android:attr/borderlessButtonStyle"/>
-        <Button android:id="@+id/btnRank" android:layout_width="0dp" android:layout_height="match_parent"
-            android:layout_weight="1" android:text=" 排行" android:textSize="13sp"
-            android:textColor="#64748B" style="?android:attr/borderlessButtonStyle"/>
-        <Button android:id="@+id/btnLogout" android:layout_width="0dp" android:layout_height="match_parent"
-            android:layout_weight="1" android:text="退出" android:textSize="13sp"
-            android:textColor="#EF4444" style="?android:attr/borderlessButtonStyle"/>
-    </LinearLayout>
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:text="退出登录"
+        android:textColor="#EF4444" />
+
 </LinearLayout>
