@@ -34,9 +34,13 @@ public class LoginActivity extends AppCompatActivity {
 
         api = new ApiClient();
 
-        // 自动登录
+        // 自动登录（连续崩两次则跳过）
         SessionManager sm = new SessionManager(this);
-        if (sm.isLoggedIn()) {
+        int crashCount = getSharedPreferences("dino_prefs", MODE_PRIVATE).getInt("crash_count", 0);
+        if (crashCount >= 2) {
+            sm.logout();
+            getSharedPreferences("dino_prefs", MODE_PRIVATE).edit().putInt("crash_count", 0).apply();
+        } else if (sm.isLoggedIn()) {
             api.setSessionId(sm.getSessionId());
             new Thread(() -> {
                 try {
