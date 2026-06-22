@@ -13,19 +13,33 @@
 
     <TextView android:id="@+id/tvUser" android:layout_width="wrap_content"
         android:layout_height="wrap_content" android:textSize="16sp"
-        android:textColor="#2563EB" android:layout_marginBottom="24dp" />
+        android:textColor="#2563EB" android:layout_marginBottom="16dp" />
 
+    <!-- 速度 -->
     <TextView android:id="@+id/tvSpeed" android:layout_width="wrap_content"
         android:layout_height="wrap_content" android:text="0" android:textSize="80sp"
         android:textColor="#1E293B" android:fontFamily="sans-serif-medium" />
-
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:text="公里/时" android:textSize="14sp" android:textColor="#64748B"
-        android:layout_marginBottom="8dp" />
-
+        android:layout_marginBottom="4dp" />
     <TextView android:id="@+id/tvGps" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:text="等待GPS..." android:textSize="13sp"
-        android:textColor="#94A3B8" android:layout_marginBottom="32dp" />
+        android:layout_height="wrap_content" android:text="等待GPS..." android:textSize="12sp"
+        android:textColor="#94A3B8" android:layout_marginBottom="20dp" />
+
+    <!-- 传感器 -->
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:background="@android:color/white" android:padding="14dp"
+        android:elevation="1dp" android:layout_marginBottom="20dp">
+        <TextView android:text=" 运动传感器" android:textSize="12sp" android:textColor="#2563EB"
+            android:layout_marginBottom="6dp"/>
+        <TextView android:id="@+id/tvAccel" android:text="加速度: --" android:textSize="12sp"
+            android:textColor="#1E293B" android:fontFamily="monospace" android:layout_marginBottom="2dp"/>
+        <TextView android:id="@+id/tvGyro" android:text="陀螺仪: --" android:textSize="12sp"
+            android:textColor="#1E293B" android:fontFamily="monospace" android:layout_marginBottom="2dp"/>
+        <TextView android:id="@+id/tvPressure" android:text="气压: --" android:textSize="12sp"
+            android:textColor="#1E293B" android:fontFamily="monospace"/>
+    </LinearLayout>
 
     <Button android:id="@+id/btnLogout" android:layout_width="200dp"
         android:layout_height="48dp" android:text="退出登录" android:textColor="#EF4444" />
